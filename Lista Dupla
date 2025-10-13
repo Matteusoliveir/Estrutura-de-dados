@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct dupla {
+    char dado;
+    struct dupla *elink, *dlink;
+} no;
+
+no* crialistaPalavra(char palavra[]) {
+    no *ini = NULL, *p = NULL, *ultimo = NULL;
+    int i = 0;
+
+    while (palavra[i] != '\0') {
+        p = (no*) malloc(sizeof(no));
+        p->dado = palavra[i];
+        p->elink = ultimo;
+        p->dlink = NULL;
+
+        if (ultimo != NULL) {
+            ultimo->dlink = p;
+        } else {
+            ini = p;
+        }
+
+        ultimo = p;
+        i++;
+    }
+    return ultimo;
+}
+
+void imprimeInversa(no *p) {
+    printf("\nPalavra invertida: ");
+    while (p != NULL) {
+        printf("%c", p->dado);
+        p = p->elink;
+    }
+    printf("\n");
+}
+
+int main() {
+    char palavra[100];
+    no *lista;
+
+    printf("Digite uma palavra: ");
+    scanf("%99s", palavra);
+
+    lista = crialistaPalavra(palavra);
+
+    if (lista != NULL)
+        imprimeInversa(lista);
+    else
+        printf("\nLista vazia\n");
+
+    return 0;
+}
