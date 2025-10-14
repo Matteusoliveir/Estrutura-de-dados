@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct dupla {
+    int dado;
+    struct dupla *elink;
+    struct dupla *dlink;
+} no;
+
+no *crialde(int n) {
+    no *ini = NULL, *p, *aux = NULL;
+    int valor;
+
+    for (int i = 1; i <= n; i++) {
+        printf("Digite o valor %d da lista: ", i);
+        scanf("%d", &valor);
+
+        p = (no*) malloc(sizeof(no));
+        if (p == NULL) {
+            printf("Erro ao alocar memória\n");
+            exit(1);
+        }
+
+        p->dado = valor;
+        p->elink = NULL;
+        p->dlink = ini;
+
+        if (ini != NULL) {
+            ini->elink = p;
+        } else {
+            aux = p;
+        }
+        ini = p;
+    }
+
+    return aux;
+}
+
+void ordenaLista(no *inicio) {
+    if (inicio == NULL) return;
+
+    no *i, *j;
+    int temp;
+
+    for (i = inicio; i->dlink != NULL; i = i->dlink) {
+        for (j = i->dlink; j != NULL; j = j->dlink) {
+            if (i->dado > j->dado) {
+                temp = i->dado;
+                i->dado = j->dado;
+                j->dado = temp;
+            }
+        }
+    }
+}
+
+void escrevelista(no *p) {
+    printf("\nLista: ");
+    while (p != NULL) {
+        printf("%d\t", p->dado);
+        p = p->dlink;
+    }
+    printf("\n");
+}
+
+int main() {
+    no *primeira;
+    int n;
+
+    printf("Criando uma lista duplamente encadeada\n");
+
+    do {
+        printf("Entre com o número de nós: ");
+        scanf("%d", &n);
+    } while (n <= 0);
+
+    primeira = crialde(n);
+
+    if (primeira != NULL) {
+        printf("Lista original:");
+        escrevelista(primeira);
+
+        ordenaLista(primeira);
+
+        printf("Lista ordenada em ordem crescente:");
+        escrevelista(primeira);
+    } else {
+        printf("Lista vazia\n");
+    }
+
+    return 0;
+}
